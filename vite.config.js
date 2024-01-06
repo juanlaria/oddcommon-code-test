@@ -15,6 +15,11 @@ export default defineConfig({
     host: true,
   },
   resolve: {
-    alias: {},
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/scripts/components'),
+      '@helpers': path.resolve(__dirname, './src/scripts/helpers'),
+      '@data': path.resolve(__dirname, './src/scripts/data'),
+    },
   },
 });
