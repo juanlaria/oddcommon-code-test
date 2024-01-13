@@ -14,6 +14,7 @@ const VideosList = ({ content }) => {
   const [dataWithVideoFiles, setDataWithVideoFiles] = useState(content.data || []);
 
   const queryResults = useQueries(
+    // Get video files
     content.data.map(item => {
       return {
         queryKey: ['contentItem', item.resource_key],
@@ -32,17 +33,19 @@ const VideosList = ({ content }) => {
     })
   );
 
-  const allFinished = queryResults.every(query => query.isSuccess);
+  const allFinished = queryResults.every(query => query.isSuccess); // Check if all queries are finished and successful
 
   useEffect(() => {
-    setLoadingData(!allFinished);
+    setLoadingData(!allFinished); // This is used to show/hide the loader that lives in Layout.jsx
   }, [allFinished]);
 
   useEffect(() => {
     setDataWithVideoFiles(prevData => {
+      // Update data with video files
       let newValues = prevData;
       prevData.forEach((item, index) => {
         newValues[index].files = {
+          // Most of this is just to match the data structure of the API response
           status: queryResults[index].status,
           isLoading: queryResults[index].isLoading,
           isSuccess: queryResults[index].isSuccess,
@@ -60,8 +63,8 @@ const VideosList = ({ content }) => {
           <VideoItem
             key={item.resource_key}
             content={item}
-            previousVideo={dataWithVideoFiles[dataWithVideoFiles.indexOf(item) - 1]?.resource_key}
-            nextVideo={dataWithVideoFiles[dataWithVideoFiles.indexOf(item) + 1]?.resource_key}
+            previousVideo={dataWithVideoFiles[dataWithVideoFiles.indexOf(item) - 1]?.resource_key} // Pass previous video resource key
+            nextVideo={dataWithVideoFiles[dataWithVideoFiles.indexOf(item) + 1]?.resource_key} // Pass next video resource key
           />
         );
       })}

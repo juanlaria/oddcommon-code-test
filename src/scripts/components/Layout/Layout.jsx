@@ -24,7 +24,7 @@ const Layout = ({ content }) => {
       gsap.to($background.current, {
         opacity: 0,
         pointerEvents: 'none',
-        delay: 2,
+        delay: 2, // Delay to make sure loader doesn't show just some miliseconds
         duration: 1,
       });
       // Animate Logo
@@ -45,6 +45,8 @@ const Layout = ({ content }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <div className={Styles.loader}>
+        {' '}
+        {/* Show loader while loading data */}
         <div ref={$background} className={Styles.background} />
         <div ref={$logo} className={Styles.logo}>
           <Logo />

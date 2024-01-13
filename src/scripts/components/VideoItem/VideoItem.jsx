@@ -19,7 +19,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   // Stores
   const { activeVideo, setActiveVideo, animationLifecycle, setAnimationLifecycle } =
     useGeneralStore();
-  const { _hasHydrated: hasHydratedVotes, votes, setVote } = useVotesStore();
+  const { votes, setVote } = useVotesStore();
 
   // States
   const [internalVote, setInternalVote] = useState(votes[content.resource_key] || 'NONE');
@@ -72,7 +72,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   };
 
   const openingAnimation = () => {
-    const velocity = 0.8;
+    const velocity = 0.8; // Variable to control the speed of the animation
     const tl = gsap.timeline({
       onStart: () => {
         setAnimationLifecycle('OPENING');
@@ -153,7 +153,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   };
 
   const closingAnimation = () => {
-    const velocity = 0.5;
+    const velocity = 0.5; // Variable to control the speed of the animation
     const tl = gsap.timeline({
       onStart: () => {
         setAnimationLifecycle('CLOSING');
@@ -229,12 +229,15 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     const localIsActive = activeVideo === content.resource_key;
     setIsActive(localIsActive);
     if (localIsActive) {
+      // Current item should be open
       if (animationLifecycle === 'CLOSED') {
+        // If all videos are closed, open the active one
         openingAnimation();
-        setWasActive(true);
+        setWasActive(true); // Set the wasActive flag to true
       }
     } else {
       if (wasActive) {
+        // If the current item needs to be closed
         closingAnimation();
         setWasActive(false);
       }
@@ -264,7 +267,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
           )})`,
         }}
       />
-      {!isActive && (
+      {!isActive && ( // Big transparent button to open the video detail
         <button
           className={Styles.openFullScreenButton}
           onClick={() => toggleActiveVideo(content.resource_key)}
@@ -308,7 +311,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
           </button>
         </div>
       </div>
-      {content?.files?.isSuccess && (
+      {content?.files?.isSuccess && ( // This is redundant now, but it was here to avoid a flicker when the video is loaded
         <div ref={$video} className={Styles.videoWrapper}>
           <VideoPlayer
             className={Styles.video}
