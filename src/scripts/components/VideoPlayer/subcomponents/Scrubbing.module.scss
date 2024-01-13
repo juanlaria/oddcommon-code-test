@@ -1,0 +1,108 @@
+.controls {
+  --thumb-size: 5px;
+  --progress-margin: 16px;
+  position: absolute;
+  right: 0;
+  top: calc(
+    100% - var(--thumb-size) - var(--progress-margin)
+  ); // 15px is the height of the scrubbing bar and 16px is the margin
+  left: 0;
+  margin: 0 24px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  transition: transform 800ms ease-in-out, opacity 800ms ease-in-out;
+  transition-delay: 0ms;
+
+  &:focus-within,
+  &.isVisible {
+    transition-delay: 2000ms;
+    transition-duration: 400ms;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.isHidden {
+    transition-delay: 0ms;
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  &__progressWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__time {
+    margin-right: 8px;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  &__infoWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 10px;
+    padding-top: 16px;
+    padding-bottom: 24px;
+    padding-left: 32px;
+    padding-right: 32px;
+    opacity: 0.7;
+    background: #000;
+    margin-top: calc(var(--thumb-size) + var(--progress-margin) + 24px);
+  }
+
+  &__title {
+    color: #fff;
+    font-family: Roobert;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+  }
+
+  &__buttonsWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  &__button {
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    & + & {
+      margin-left: 8px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    &__checkbox {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    &__icon {
+      width: 42px;
+      height: 42px;
+
+      &.backIcon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

@@ -1,75 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import {
-  useQuery,
-  useQueryClient,
-  useQueries,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
+import React, { useEffect, useRef } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import gsap from 'gsap';
+
+import { Logo, VideosList } from '@components';
+
+import { useGeneralStore } from '@data/generalStore';
 
 import Styles from './Layout.module.scss';
 
 const queryClient = new QueryClient();
 
 const Layout = ({ content }) => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <main>
-        <Videos content={content} />
-      </main>
-    </QueryClientProvider>
-  );
-};
+  // Stores
+  const { loadingData } = useGeneralStore();
 
-const Videos = ({ content }) => {
-  const [dataWithVideoFiles, setDataWithVideoFiles] = useState(content.data || []);
-  const queryResults = useQueries(
-    content.data.map(item => {
-      return {
-        queryKey: ['contentItem', item.resource_key],
-        queryFn: async () =>
-          await fetch(`https://proxy.oddcommon.dev/vimeo/${item.uri.replace('/videos/', '')}`, {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-          }).then(function (response) {
-            return response.json();
-          }),
-      };
-    })
-  );
+  // Refs
+  const $background = useRef();
+  const $logo = useRef();
 
   useEffect(() => {
-    setDataWithVideoFiles(prevData => {
-      let newValues = prevData;
-      prevData.forEach((item, index) => {
-        newValues[index].files = {
-          status: queryResults[index].status,
-          isLoading: queryResults[index].isLoading,
-          isSuccess: queryResults[index].isSuccess,
-          data: queryResults[index].data?.request.files || null,
-        };
+    if (!loadingData) {
+      // Animate Loader Background
+      gsap.to($background.current, {
+        opacity: 0,
+        pointerEvents: 'none',
+        delay: 2,
+        duration: 1,
       });
-      return newValues;
-    });
-  }, [queryResults]);
+      // Animate Logo
+      gsap.to($logo.current, {
+        pointerEvents: 'none',
+        xPercent: 0,
+        yPercent: 0,
+        top: '20px',
+        left: '20px',
+        animation: 'initial',
+        opacity: 1,
+        delay: 1,
+        duration: 1,
+      });
+    }
+  }, [loadingData]);
 
   return (
-    <ul>
-      {dataWithVideoFiles.map(item => {
-        return (
-          <li key={item.resource_key}>
-            <h2>{item.name}</h2>
-            {item?.files?.isSuccess && (
-              <small>{item.files.data.hls.cdns[item.files.data.hls.default_cdn].url}</small>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <QueryClientProvider client={queryClient}>
+      <div className={Styles.loader}>
+        <div ref={$background} className={Styles.background} />
+        <div ref={$logo} className={Styles.logo}>
+          <Logo />
+        </div>
+      </div>
+      <main className={Styles.main}>
+        <VideosList content={content} />
+      </main>
+    </QueryClientProvider>
   );
 };
 

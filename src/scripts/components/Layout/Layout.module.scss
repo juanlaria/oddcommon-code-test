@@ -1,2 +1,37 @@
-.layout {
+.background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  z-index: 3;
+}
+
+.logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  width: 6rem;
+  animation: pulse 2s infinite;
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    40% {
+      opacity: 0.5;
+    }
+    80% {
+      opacity: 1;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
