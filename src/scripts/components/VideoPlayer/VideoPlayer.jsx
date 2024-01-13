@@ -65,7 +65,7 @@ const VideoPlayerInner = ({
   });
 
   const { ref, inView } = useInView({
-    threshold: 0.8,
+    threshold: 0.95,
   });
 
   const handlePlayPause = () => {
