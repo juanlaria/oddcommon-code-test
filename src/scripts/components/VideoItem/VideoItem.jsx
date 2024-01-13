@@ -19,7 +19,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   // Stores
   const { activeVideo, setActiveVideo, animationLifecycle, setAnimationLifecycle } =
     useGeneralStore();
-  const { votes, setVote } = useVotesStore();
+  const { _hasHydrated: hasHydratedVotes, votes, setVote } = useVotesStore();
 
   // States
   const [internalVote, setInternalVote] = useState(votes[content.resource_key] || 'NONE');
@@ -45,14 +45,14 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   };
 
   const handleLike = () => {
-    if (votes[content.resource_key] === 'LIKE') {
+    if (internalVote === 'LIKE') {
       handleVote('NONE');
     } else {
       handleVote('LIKE');
     }
   };
   const handleDislike = () => {
-    if (votes[content.resource_key] === 'DISLIKE') {
+    if (internalVote === 'DISLIKE') {
       handleVote('NONE');
     } else {
       handleVote('DISLIKE');
