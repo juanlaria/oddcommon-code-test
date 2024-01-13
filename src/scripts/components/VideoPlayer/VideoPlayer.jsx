@@ -3,9 +3,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player/file';
 import { useInView } from 'react-intersection-observer';
 
-// import PauseBigIcon from '~/assets/svg/pause-big.svg'
-// import PlayBigIcon from '~/assets/svg/play-big.svg'
-
 import Scrubbing from './subcomponents/VideoPlayer.Scrubbing';
 import Placeholder from './subcomponents/VideoPlayer.Placeholder';
 
@@ -13,6 +10,10 @@ import { isLowPowerMode } from '@helpers';
 
 import { adjustThumbnailSize } from './helpers';
 import CSS from './VideoPlayer.module.scss';
+
+// READ THIS:
+// This component is a modified version of a VideoPlayer component I created for a previous project.
+// That´s why it has some extra features that are not being used here.
 
 const VideoPlayerInner = ({
   asset,
@@ -54,6 +55,7 @@ const VideoPlayerInner = ({
     float: 9 / 16,
   });
   const [config] = useState({
+    // Used HLS instead of MP4 because it will adapt to the user's bandwidth
     file: {
       forceHLS: !isSafari,
       hlsOptions: {
@@ -74,10 +76,6 @@ const VideoPlayerInner = ({
       playerRef.current.seekTo(0);
     }
     setPlaying(!playing);
-  };
-
-  const handleToggleMuted = () => {
-    setMuted(!muted);
   };
 
   const handleDuration = videoDuration => {
