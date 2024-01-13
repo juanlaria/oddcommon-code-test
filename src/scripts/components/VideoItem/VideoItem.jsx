@@ -109,7 +109,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
       $background.current,
       {
         duration: 0.8,
-        opacity: '1',
+        autoAlpha: '1',
         filter: 'blur(10px) grayscale(1)',
       },
       '<0.4'
@@ -126,7 +126,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
       {
         duration: 0.8,
         display: 'block',
-        opacity: '1',
+        autoAlpha: '1',
         rotate: 180,
       },
       '<'
@@ -137,7 +137,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
       $info.current,
       {
         duration: 0.8,
-        opacity: '0',
+        autoAlpha: '0',
       },
       0
     );
@@ -155,16 +155,6 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
         setAnimationLifecycle('CLOSING');
       },
     });
-
-    // Animate Info
-    tl.to(
-      $info.current,
-      {
-        duration: 0.8,
-        opacity: '1',
-      },
-      0
-    );
 
     // Animate Video size
     tl.to(
@@ -196,16 +186,26 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
       {
         duration: 0.8,
         display: 'none',
-        opacity: '0',
+        autoAlpha: '0',
         rotate: -180,
       },
       0
     );
 
+    // Animate Info
+    tl.to(
+      $info.current,
+      {
+        duration: 0.8,
+        autoAlpha: '1',
+      },
+      '>'
+    );
+
     // Animate Background
     tl.to($background.current, {
       duration: 0.8,
-      opacity: '0',
+      autoAlpha: '0',
       filter: 'blur(5px) grayscale(0.5)',
     });
     tl.to($background.current, {

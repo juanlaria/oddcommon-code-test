@@ -6,8 +6,6 @@ import { useInView } from 'react-intersection-observer';
 // import PauseBigIcon from '~/assets/svg/pause-big.svg'
 // import PlayBigIcon from '~/assets/svg/play-big.svg'
 
-import { ClientOnly } from '@components';
-
 import Scrubbing from './subcomponents/VideoPlayer.Scrubbing';
 import Placeholder from './subcomponents/VideoPlayer.Placeholder';
 
@@ -25,7 +23,6 @@ const VideoPlayerInner = ({
   defaultControls,
   scrubbing,
   scrubbingAlwaysOn,
-  muteToggle,
   pausable,
   time,
   loop,
@@ -285,7 +282,7 @@ const VideoPlayerInner = ({
             <>
               <ReactPlayer
                 ref={playerRef}
-                className={CSS.reactPlayer}
+                className={`react-player ${CSS.reactPlayer}`}
                 width="100%"
                 height="100%"
                 url={fileUrl}
@@ -322,20 +319,6 @@ const VideoPlayerInner = ({
                   onPrevious={handlePrevious}
                 />
               )}
-              {muteToggle && (
-                <button
-                  onClick={handleToggleMuted}
-                  className={`
-									${CSS.player__muteButton}
-									${muted ? CSS.isMuted : ''}
-									${pausable && !defaultControls ? (scrubbingVisibility ? CSS.isVisible : CSS.isHidden) : ''}
-									`}
-                  aria-label={muted ? 'Unmute' : 'Mute'}
-                  data-action={muted ? 'Unmute video' : 'Mute video'}
-                >
-                  <AnimatedDing name="musicnote" className={CSS.player__muteButton__icon} />
-                </button>
-              )}
             </>
           )}
         </figure>
@@ -348,7 +331,7 @@ const VideoPlayer = props => {
   const { className, ...delegated } = props;
   return (
     <div className={className}>
-      <ClientOnly className={CSS.clientOnly}>{<VideoPlayerInner {...delegated} />}</ClientOnly>
+      <VideoPlayerInner {...delegated} />
     </div>
   );
 };

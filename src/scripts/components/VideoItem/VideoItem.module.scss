@@ -66,6 +66,7 @@
   }
 
   .videoWrapper {
+    display: flex;
     z-index: 1;
     flex: 1;
     aspect-ratio: 0.666;
