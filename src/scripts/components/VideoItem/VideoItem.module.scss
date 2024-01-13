@@ -141,7 +141,7 @@
     background: none;
     padding: 0;
     border: 0;
-    transition: opacity 300s ease-in-out;
+    transition: opacity 300ms ease-in-out;
 
     &.dislike {
       transform: rotate(0.5turn);
