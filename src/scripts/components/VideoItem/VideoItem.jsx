@@ -72,22 +72,31 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
   };
 
   const openingAnimation = () => {
+    const velocity = 0.8;
     const tl = gsap.timeline({
       onStart: () => {
         setAnimationLifecycle('OPENING');
+        // Block Scroll
+        gsap.set(document.body, {
+          overflow: 'hidden',
+          height: '100%',
+        });
       },
       onComplete: () => {
         setAnimationLifecycle('OPEN');
       },
     });
     // Scroll to item
-    tl.to(window, { duration: 1, scrollTo: $item.current });
+    tl.to(window, {
+      duration: 1 * velocity,
+      scrollTo: $item.current,
+    });
 
     // Animate Item size
     tl.to(
       $item.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         height: '100dvh',
         width: '100dvw',
       },
@@ -98,7 +107,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $video.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         aspectRatio: content.width / content.height,
       },
       '>'
@@ -108,23 +117,23 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $background.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         autoAlpha: '1',
         filter: 'blur(10px) grayscale(1)',
       },
       '<0.4'
     );
 
-    tl.to($background.current, {
-      duration: 2,
-      scale: 1.2,
-    });
+    // tl.to($background.current, {
+    //   duration: 2 * velocity,
+    //   scale: 1.2,
+    // });
 
     // Animate Close button
     tl.to(
       $closeButton.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         display: 'block',
         autoAlpha: '1',
         rotate: 180,
@@ -136,20 +145,15 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $info.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         autoAlpha: '0',
       },
       0
     );
-
-    // Block Scroll
-    tl.set(document.body, {
-      overflow: 'hidden',
-      height: '100%',
-    });
   };
 
   const closingAnimation = () => {
+    const velocity = 0.5;
     const tl = gsap.timeline({
       onStart: () => {
         setAnimationLifecycle('CLOSING');
@@ -160,7 +164,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $video.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         aspectRatio: 0.666,
       },
       '>'
@@ -170,11 +174,16 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $item.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         height: 'auto',
         width: null,
         onComplete: () => {
           setAnimationLifecycle('CLOSED');
+          // Unblock Scroll
+          gsap.set(document.body, {
+            overflow: 'auto',
+            height: 'initial',
+          });
         },
       },
       '>'
@@ -184,7 +193,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $closeButton.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         display: 'none',
         autoAlpha: '0',
         rotate: -180,
@@ -196,7 +205,7 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
     tl.to(
       $info.current,
       {
-        duration: 0.8,
+        duration: 0.8 * velocity,
         autoAlpha: '1',
       },
       '>'
@@ -204,20 +213,14 @@ const VideoItem = ({ content, previousVideo, nextVideo }) => {
 
     // Animate Background
     tl.to($background.current, {
-      duration: 0.8,
+      duration: 0.8 * velocity,
       autoAlpha: '0',
       filter: 'blur(5px) grayscale(0.5)',
     });
-    tl.to($background.current, {
-      duration: 2,
-      scale: 1,
-    });
-
-    // Block Scroll
-    tl.set(document.body, {
-      overflow: 'auto',
-      height: 'initial',
-    });
+    // tl.to($background.current, {
+    //   duration: 2 * velocity,
+    //   scale: 1,
+    // });
   };
 
   // Effects
